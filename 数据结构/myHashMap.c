@@ -62,7 +62,7 @@ void freeHashTable(HashTable** myHash) {
     for (int i = 0; i < bucketCount; i++) {
         // hashTable->bucket[i] 拿到的是一个结构体
         hashEntry = &((hashTable->bucket)[i]);
-        // 这个散列表为空，又是第一个，所以不需要释放
+        // 这个散列表为空,又是第一个,所以不需要释放
         if (hashEntry->key == NULL) {
             continue;
         }
@@ -111,7 +111,7 @@ int keyToIndex(const char* key) {
 
 
 
-// 扩容函数，当加载因子（size/bucketCount）时就触发扩容
+// 扩容函数,当加载因子（size/bucketCount）时就触发扩容
 void resizeHash(HashTable** myHash) {
     // 原哈希表的指针
     HashTable* oldHash = *myHash;
@@ -128,12 +128,12 @@ void resizeHash(HashTable** myHash) {
     // 扩容
     newHash->bucket = (HashEntry*)malloc(sizeof(HashEntry) * bucketCount);
     memset(newHash->bucketNum, 0, sizeof(int) * bucketCount); // 初始化数组
-    // 复制bucket以及后面的数据 // 注意，因为采用了新的bucket数量,所以对应的bucket索引也要改变
+    // 复制bucket以及后面的数据 // 注意,因为采用了新的bucket数量,所以对应的bucket索引也要改变
     for (int i = 0; i < oldHash->size; i++) {
         oldHashEntry = &((oldHash->bucket)[i]);
 
         while (oldHashEntry != NULL) {
-            if (oldHashEntry->key == NULL) { // 是第一个元素，且为空的话
+            if (oldHashEntry->key == NULL) { // 是第一个元素,且为空的话
                 break;
             }
             // 非空情况
@@ -145,7 +145,7 @@ void resizeHash(HashTable** myHash) {
                 newHashEntry = newHashEntry->next;
             }
             // 如果是填充第一个bucket里的hashEntry且为空的情况
-            // 事实上，经过上面的判定，newHashEntry->key == NULL 只能对应第一个元素且为null的情况
+            // 事实上,经过上面的判定,newHashEntry->key == NULL 只能对应第一个元素且为null的情况
             if (newHashEntry->key == NULL) {
                 (newHash->size)++;
                 newHashEntry->key = oldHashEntry->key;
@@ -173,16 +173,16 @@ void resizeHash(HashTable** myHash) {
     *myHash = newHash;
 }
 
-// 这个了插入和修改是一个方法,如果key在哈希表中已经存在,那么就是修改value,否则就是插入一个节点。
+// 这个了插入和修改是一个方法,如果key在哈希表中已经存在,那么就是修改value,否则就是插入一个节点.
 //向哈希表中插入数据
-// 为了实现扩容，这里传的时hashTable指针的指针
+// 为了实现扩容,这里传的时hashTable指针的指针
 void insertEntry(HashTable** myHash, const char* key, char* value) {
-    // 输入数据有误，直接返回-1
+    // 输入数据有误,直接返回-1
     if (myHash == NULL || *myHash == NULL || key == NULL || value == NULL) {
         printf("data error");
         return;
     }
-    // 如果size满了，进行扩容
+    // 如果size满了,进行扩容
     if (((*myHash)->size) / bucketCount >= resizeNum) {
         resizeHash(myHash);
     }
@@ -192,7 +192,7 @@ void insertEntry(HashTable** myHash, const char* key, char* value) {
     // 在散列表中的索引位置
     int index = keyToIndex(key);
     (hashTable->bucketNum)[index]++;
-    // 以前value的长度，现在value的长度，如果老的value长度比新的value长的划，使用memcpy即可，
+    // 以前value的长度,现在value的长度,如果老的value长度比新的value长的划,使用memcpy即可,
     // 不然的话还要开辟新空间
     int  oldValueLen, newValueLen;
     // 存储key-value的实体指针,以及记录上一个hashEntrt的指针
@@ -236,8 +236,8 @@ void insertEntry(HashTable** myHash, const char* key, char* value) {
         beforeHashEntry = hashEntry;
         hashEntry = hashEntry->next;
     }
-    // 桶中没有找到key，那就在末尾添加
-    // 此时的hashEntry指向的是null，而beforeHashEntry指向的是最后一个结构体
+    // 桶中没有找到key,那就在末尾添加
+    // 此时的hashEntry指向的是null,而beforeHashEntry指向的是最后一个结构体
     beforeHashEntry->next = (HashEntry*)malloc(sizeof(HashEntry));
     beforeHashEntry->next->key = strdup(key);
     beforeHashEntry->next->value = strdup(value);
@@ -246,7 +246,7 @@ void insertEntry(HashTable** myHash, const char* key, char* value) {
 }
 
 //在哈希表中查找key对应的value
-//找到了返回value的地址，没找到返回NULL
+//找到了返回value的地址,没找到返回NULL
 char* findValueByKey(HashTable** myHash, const char* key) {
     HashTable* hashTable = *myHash;
     int index; // bucket的索引
@@ -262,11 +262,11 @@ char* findValueByKey(HashTable** myHash, const char* key) {
     }
     while (hashEntry != NULL) {
         if (0 == strcmp(key, hashEntry->key)) {
-            return hashEntry->value;    //找到了，返回值
+            return hashEntry->value;    //找到了,返回值
         }
         hashEntry = hashEntry->next;
     }
-    // 遍历了列表，没有找到
+    // 遍历了列表,没有找到
     return NULL;
 }
 
@@ -298,8 +298,8 @@ int removeHashEntry(HashTable** myHash, const char* key) {
             hashTable->size--;
             hashEntry->key = NULL;
             hashEntry->value = NULL;
-            // hashEntry->next = NULL; 不用写，因为如果此时hashEntry->next本来就为null
-        } else { // 不是最后一个的话 // 相当于把下面一个元素复制到第一个，然后删除第一个
+            // hashEntry->next = NULL; 不用写,因为如果此时hashEntry->next本来就为null
+        } else { // 不是最后一个的话 // 相当于把下面一个元素复制到第一个,然后删除第一个
             nextHashEntry = hashEntry->next;
             hashEntry->key = nextHashEntry->key;
             hashEntry->value = nextHashEntry->value;
