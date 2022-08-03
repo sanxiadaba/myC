@@ -2,7 +2,8 @@
 #define my_type int32
 #define my_type_ptr ptr_int32
 // 动态数组
-typedef struct {
+typedef struct
+{
     // 指向一个指定类型的数组的指针
     my_type_ptr arr;
     // 当前已存储数据多少
@@ -12,9 +13,11 @@ typedef struct {
 } List;
 
 // 插入元素
-void list_add(List* list, my_type data) {
+void list_add(List *list, my_type data)
+{
     // 当size==capcity时自动扩容
-    if (list->size == list->capcity) {
+    if (list->size == list->capcity)
+    {
         int32 old_capcity = list->capcity;
         // 扩容到原先的两倍空间
         list->capcity *= 2;
@@ -29,9 +32,11 @@ void list_add(List* list, my_type data) {
 }
 
 // 从list中取数据
-int32 list_get(List* list, int32 index) {
+int32 list_get(List *list, int32 index)
+{
     // 检查数据是否合法
-    if (index >= 0 && index < list->size) {
+    if (index >= 0 && index < list->size)
+    {
         return (list->arr)[index];
     }
     // 内存异常的返回值
@@ -39,9 +44,10 @@ int32 list_get(List* list, int32 index) {
 }
 
 // 创建列表
-List* create_list() {
+List *create_list()
+{
     // 先定义一个结构体指针
-    List* list = (List*)malloc(sizeof(List));
+    List *list = (List *)malloc(sizeof(List));
     // 初始化capcity、size、arr
     list->capcity = 8;
     list->size = 0;
@@ -53,13 +59,16 @@ List* create_list() {
 
 
 
-int main(void) {
-    List* list;
+int main(void)
+{
+    List *list;
     list = create_list();
-    for (int i = 0; i < 17; i++) {
+    for (int i = 0; i < 17; i++)
+    {
         list_add(list, i);
     }
-    for (int i = 0; i < 17; i++) {
+    for (int i = 0; i < 17; i++)
+    {
         printf("%d ", list_get(list, i));
     }
     // 释放存放数组的空间的内存

@@ -1,16 +1,19 @@
 // 对my_util.h里功能的测试
 #include "my_util.h"
 
-void test_sleep() {
+void test_sleep()
+{
     sleep(0.5);   // 休眠0.5秒
 }
 
-int32 test_return_code(int32 a) {
+int32 test_return_code(int32 a)
+{
     return a;
 }
 
 
-int32 main(void) {
+int32 main(void)
+{
     printf(xing_xing);
     printf(deng_hao);
     printf(xu_xian);
@@ -36,11 +39,9 @@ int32 main(void) {
     my_print(a);
     my_print(g);
     my_print(p1);
-    log_error("错误码为：%d\n", a);
+    log_error("错误码为:%d\n", a);
     line_xu_xian();
     print_time(test_sleep());
-    error_return(test_return_code(0));
-    error_return(test_return_code(1));
     line_xu_xian();
     array arr = { 1,2,3,4,5 };
     int32 tmp_arr_size = arr_size(arr);
@@ -73,5 +74,18 @@ int32 main(void) {
     my_print(b);
     my_print(average_num(a, b));
     line_xu_xian();
+    a = is_odd_num(10);
+    b = is_odd_num(9);
+    my_print(a);
+    my_print(b);
+
+
+
+
+
+
+
+
+
     return EXIT_SUCCESS;
 }

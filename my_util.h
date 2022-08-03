@@ -1,5 +1,13 @@
 #pragma once 							// 保证只被编译一次
-#define MY_LOG_CLOSE 1					// 开启日志、断言的功能 0:关闭 1: 开启
+#define NDEBUG							// 关闭 debug 模式:关闭日志、assert
+#undef NDEBUG 							// 这行注释解开的话,开启 debug 模式
+
+
+/* 注意 */
+// 1. 换行符后不要有空格
+// 2. 注意 XXX() 与 ({}) 的使用时机
+// 3. 不要出现中文符号 , : . ? ( "
+
 
 /* 常用库导入 */
 #include <stdio.h> 						// 输如输出
@@ -9,23 +17,17 @@
 #include<math.h> 						// math 计算常用库
 #include <errno.h> 						// 错误日志用到的库
 #include<time.h> 						// 计算时间用的宏
-#include <unistd.h> 					// 封装一些系统api 比如 sleep
-#include<assert.h>						// 使用assert
-
-/* 在release模式下关闭assert */
-#if MY_LOG_CLOSE==0
-#undef assert(x)
-#define assert(x) ((void)0)
-#endif
+#include <unistd.h> 					// 封装一些系统 api 比如 sleep
+#include<assert.h>						// 使用 assert
 
 
-/* 常见类型的typedef */
+/* 常见类型的 typedef */
 // 数字定义
 typedef signed char					int8; 		// -128 到 127
 typedef signed short int			int16; 		// -32,768 到 32,767
 typedef signed int					int32; 		// -2,147,483,648 到 2,147,483,647
 typedef signed long	long int		int64;  	// -9223372036854775808 到 +9223372036854775807
-typedef float 						float32;	// 与int32 取值范围相同,精度较低
+typedef float 						float32;	// 与 int32 取值范围相同,精度较低
 
 typedef unsigned char				uint8;
 typedef unsigned short int			uint16;
@@ -34,12 +36,12 @@ typedef unsigned long long int		uint64;
 typedef double 						float64;
 
 // 常见类型定义
-typedef char* string;
+typedef char *string;
 typedef int array[];
-typedef int* ptr_int32;
-typedef int* ptr_int64;
-typedef float* ptr_float32;
-typedef double* ptr_float64;
+typedef int *ptr_int32;
+typedef int *ptr_int64;
+typedef float *ptr_float32;
+typedef double *ptr_float64;
 
 
 /* 常量宏定义 */
@@ -81,7 +83,7 @@ typedef double* ptr_float64;
 // 判断类型模板宏 
 #define type_judges_macro(x,y)	__builtin_types_compatible_p(typeof(x), y)
 
-// 判断类型的宏,判断一个数据是int、char、float、还是指针ptr
+// 判断类型的宏,判断一个数据是 int、char、float、还是指针 ptr
 #define type_judges(x) ({																			\
 	string my_type;																					\
 	if(type_judges_macro(x,int64) or type_judges_macro(x,int32) or type_judges_macro(x,int16)) {	\
@@ -102,8 +104,8 @@ typedef double* ptr_float64;
 
 /* 常用的打印输出宏 */
 // 打印变量,万能的打印宏
-// 这里有一个小细节,%lld 输出时,int32 要转换成 int64 不然无法正常显示负数
-// 而 float32 无需转换成 float64 不然会报错（精度丢失?）
+// 这里有一个小细节, %lld 输出时, int32 要转换成 int64 不然无法正常显示负数
+// 而 float32 无需转换成 float64 不然会报错(精度丢失?）
 #define my_print(x) XXX(																			\
 		string print_type=type_judges(x);															\
 		if (print_type=="int") {																	\
@@ -144,8 +146,8 @@ typedef double* ptr_float64;
 #define line_red() printf(COLOR_RED deng_hao COLOR_RESET) 				// 红色等号分隔符
 
 
-/* 日志处理,当日志宏开启的时候 */
-#if MY_LOG_CLOSE==1
+/* 日志处理,当DEBUG宏开启的时候 */
+#ifndef NDEBUG
 // 打印彩色字符/日志打印
 // 使用示例 log_red("没有报错%d,%s", 0, "真的"); 
 // [main - 4](error) : 没有报错0, 真的(No error), errno全局变量会自动改变
@@ -167,17 +169,6 @@ typedef double* ptr_float64;
 		log_green("运行时间: %lf",duration); 														 \
 )
 
-// 打印函数返回值 error_return 里面放要执行的函数,return_code 不为 0 的话,调用 log_error
-#define error_return(express)	({																	\
-		int32 err = express;																		\
-		if(err!=0){																					\
-		log_red("函数 %s 状态码异常,error code: %d",#express,err);									 \
-		}																							\
-		else{																						\
-			log_green("函数 %s 正常返回,error code: %d",#express,0);							 	 \
-		}																							\
-})
-
 // 输出打印一维数组
 #define print_arr(arr,arr_size)	 XXX(																\
 	printf("%s: [",#arr);																			\
@@ -191,7 +182,7 @@ typedef double* ptr_float64;
 
 #else
 #define log_red(x...)
-#define log_greeen(x...)
+#define log_green(x...)
 #define log_yello(x...)
 #define log_blue(x...)
 #define log_magenta(x...)
@@ -215,7 +206,7 @@ typedef double* ptr_float64;
 #define average_num(a,b) 		(a+(b-a)/2)
 
 // 判断数字是否在区间	[minx, maxx] 
-// 使用位运算,更快,在的话返回true,否则返回false		 
+// 使用位运算,更快,在的话返回 true ,否则返回 false		 
 #define in_min_max(x,minx,maxx)		({																\
 		bool ret = false;																			\
 		if ((int32)(((uint32)x-(uint32)minx) | ((uint32)maxx-(uint32)x))>= 0){						\
@@ -234,10 +225,10 @@ typedef double* ptr_float64;
 })
 
 
-// 交换两个变量,可以是char、int32、uint64等基本类型,这里使用的gcc特有的typeof关键字
+// 交换两个变量,可以是 char、int32、uint64 等基本类型,这里使用的 gcc 特有的 typeof 关键字
 // 交换两个变量的方法有很多,甚至有很多无消耗内存甚至使用位运算进行的交换
 // 但现代编译器已经进行了大量优化,这种使用局部变量的方式反而是最快的
-// 注意,传进a,b 的参数是指针
+// 注意,传进 a,b 的参数是指针
 #define swap(a,b) ({																				\
 		typeof(*a) temp = *a;																		\
 		*a = *b;																					\
@@ -262,6 +253,21 @@ typedef double* ptr_float64;
 		}while(left < right);																		\
 })
 
+// 判断是奇数还是偶数
+// 这里是使用的 "按位与" 进行的判断
+// "按位与" 也就是 & 符号的规则是两个 bit 位都为 1 结果才为 1
+// 我们知道,计算机存储数据是以二进制格式存储的
+// 一个数字,如果是偶数,其二进制数字末尾必然是 0 
+// 与 1 进行 "按位与" ,其实本质是判断最后一位是 1 还是 0
+// 最后一位是 1 的话返回 false(奇数)
+#define is_odd_num(x) ({																			\
+		bool is_odd = true;																			\
+		if((x & 1) == 1) {																			\
+			is_odd = false;																			\
+		}																							\
+		is_odd;																						\
+})
+
 
 /* 运算宏 */
 // for循环的宏
@@ -284,7 +290,8 @@ typedef double* ptr_float64;
 
 /* windows情况下的提前运行 */
 #ifdef _WIN32
-static __attribute__((constructor)) void before_main() {
+static __attribute__((constructor)) void before_main()
+{
 	system("chcp 65001");
 	// clear();	// 清屏
 }
@@ -298,5 +305,5 @@ const float64 PI = 3.141592653589793;
 const float64 EPS = 1e-8;
 // int32 里的"无穷大"
 const int32 INF = 0x3f;
-// 真正的无穷大(int 能表示的数字的最大值)
+// 真正的无穷大( int 能表示的数字的最大值)
 const int32 INF_REAL = 0x7f;

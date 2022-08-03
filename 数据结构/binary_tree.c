@@ -5,15 +5,17 @@
 // #define my_type int 是可以的因为int是基本类型,但#define my_type int32
 // 不行,因为此时int32还未定义
 typedef int32 my_type;
-typedef struct BiTree {
+typedef struct BiTree
+{
     my_type data;
-    struct BiTree* left_tree;
-    struct BiTree* right_ree;
+    struct BiTree *left_tree;
+    struct BiTree *right_ree;
 } BiTree;
 
 // 创建一个节点
-BiTree* create_node(my_type data) {
-    BiTree* node = (BiTree*)malloc(sizeof(BiTree));
+BiTree *create_node(my_type data)
+{
+    BiTree *node = (BiTree *)malloc(sizeof(BiTree));
     node->data = data;
     node->left_tree = node->right_ree = NULL;
     return node;
@@ -21,24 +23,35 @@ BiTree* create_node(my_type data) {
 
 // 插入数据
 // 在左右节点非空的情况下,保证左节点小于根节点,右节点大于根节点
-void insert_node(my_type data, BiTree* node) {
+void insert_node(my_type data, BiTree *node)
+{
 
     // 等于的话直接结束
-    if (data == (node->data)) {
+    if (data == (node->data))
+    {
         return;
     }
 
-    if (data < (node->data)) {
+    if (data < (node->data))
+    {
         // 先判断左节点是否为空
-        if (node->left_tree == NULL) {
+        if (node->left_tree == NULL)
+        {
             node->left_tree = create_node(data);
-        } else {
+        }
+        else
+        {
             insert_node(data, node->left_tree);
         }
-    } else {
-        if (node->right_ree == NULL) {
+    }
+    else
+    {
+        if (node->right_ree == NULL)
+        {
             node->right_ree = create_node(data);
-        } else {
+        }
+        else
+        {
             insert_node(data, node->right_ree);
         }
 
@@ -53,8 +66,10 @@ void insert_node(my_type data, BiTree* node) {
 */
 
 // 先序遍历
-void pre_order_traverse(BiTree* node) {
-    if (node == NULL) {   //递归出口; 
+void pre_order_traverse(BiTree *node)
+{
+    if (node == NULL)
+    {   //递归出口; 
         return;
     }
     my_print_t(node->data);    //显示结点值;   
@@ -63,8 +78,10 @@ void pre_order_traverse(BiTree* node) {
 }
 
 // 中序遍历
-void in_order_traverse(BiTree* node) {
-    if (node == NULL) {   //递归出口; 
+void in_order_traverse(BiTree *node)
+{
+    if (node == NULL)
+    {   //递归出口; 
         return;
     }
     pre_order_traverse(node->left_tree); //先左子树；
@@ -73,8 +90,10 @@ void in_order_traverse(BiTree* node) {
 }
 
 // 后序遍历
-void aft_order_traverse(BiTree* node) {
-    if (node == NULL) {   //递归出口; 
+void aft_order_traverse(BiTree *node)
+{
+    if (node == NULL)
+    {   //递归出口; 
         return;
     }
     pre_order_traverse(node->left_tree); //先左子树；
@@ -83,7 +102,8 @@ void aft_order_traverse(BiTree* node) {
 }
 
 // 层次遍历
-void lel_traverse(BiTree* node) {
+void lel_traverse(BiTree *node)
+{
     line_deng_hao();
     printf("begin level tarvel\n");
     line_deng_hao();
@@ -92,43 +112,54 @@ void lel_traverse(BiTree* node) {
     printf("\n");
     int32 count = 2;            // 下一层节点的个数
     // 数组里面存的是结构体指针
-    BiTree** arr = (BiTree**)malloc(sizeof(BiTree*) * count);
+    BiTree **arr = (BiTree **)malloc(sizeof(BiTree *) * count);
     // 先初始化
-    fori(0, 2) {
+    fori(0, 2)
+    {
         arr[0] = node->left_tree;
         arr[1] = node->right_ree;
     }
-    while (true) {
+    while (true)
+    {
         // 计算数组里多少个Null
         int32 tmp_count = 0;
 
-        fori(0, count) {
-            if (arr[i] == NULL) {
+        fori(0, count)
+        {
+            if (arr[i] == NULL)
+            {
                 tmp_count++;
                 printf("NULL\t");
-            } else {
+            }
+            else
+            {
                 my_print_t(arr[i]->data);    //显示结点值;
             }
 
         }
         printf("\n");
         // 都是null的话就提前退出了
-        if (tmp_count == count) {
+        if (tmp_count == count)
+        {
             break;
         }
         // 对下个数组进行填写数值时用到的指针
         tmp_count = 0;
         // 存储下一层的指针列表
         count *= 2;
-        BiTree** tmp_array = (BiTree**)malloc(sizeof(BiTree*) * count);
+        BiTree **tmp_array = (BiTree **)malloc(sizeof(BiTree *) * count);
 
-        fori(0, count / 2) {
-            if (arr[i] == NULL) {
+        fori(0, count / 2)
+        {
+            if (arr[i] == NULL)
+            {
                 tmp_array[tmp_count] = NULL;
                 tmp_count++;
                 tmp_array[tmp_count] = NULL;
                 tmp_count++;
-            } else {
+            }
+            else
+            {
                 tmp_array[tmp_count] = arr[i]->left_tree;
                 tmp_count++;
                 tmp_array[tmp_count] = arr[i]->right_ree;
@@ -147,8 +178,10 @@ void lel_traverse(BiTree* node) {
 
 // 释放内存 
 // 采用后序遍历的方式来进行内存释放
-void freeTree(BiTree* node) {
-    if (node == NULL) {
+void freeTree(BiTree *node)
+{
+    if (node == NULL)
+    {
         return;
     }
     freeTree(node->left_tree);
@@ -157,8 +190,9 @@ void freeTree(BiTree* node) {
 }
 
 
-int main(void) {
-    BiTree* root = create_node(9);
+int main(void)
+{
+    BiTree *root = create_node(9);
     insert_node(4, root);
     insert_node(15, root);
     insert_node(2, root);
