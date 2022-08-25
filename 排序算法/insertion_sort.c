@@ -1,6 +1,6 @@
 #include "../my_util.h"
 // 插入排序
-void insertion_sort(array arr, int32 size)
+void insertion_sort(array arr, int size)
 {
     // 注意边界,插入排序的第一个元素不需要遍历
     fori(1, size)
@@ -24,12 +24,12 @@ void insertion_sort(array arr, int32 size)
 
 }
 
-int32 main(void)
+int main(void)
 {
     array arr = { 3,44,38,5,47,15,36,26,27,2,46,4,19,50,48 };
-    int32 size = arr_size(arr);
+    int size = arr_size(arr);
     print_arr(arr, size);
-    line_deng_hao();
+    line(1);
     insertion_sort(arr, size);
     print_arr(arr, size);
     return 0;

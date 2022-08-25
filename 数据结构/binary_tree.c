@@ -1,21 +1,18 @@
 #include "../my_util.h"
 // 定义二叉树里的数据类型
-// #define my_type int32 
-// 小细节,这里不能这样,因为typedef是在编译器进行的替换
-// #define my_type int 是可以的因为int是基本类型,但#define my_type int32
-// 不行,因为此时int32还未定义
-typedef int32 my_type;
+typedef int my_type;    // 二叉树存放的数据类型时int
 typedef struct BiTree
 {
     my_type data;
-    struct BiTree *left_tree;
-    struct BiTree *right_ree;
+    struct BiTree *left_tree;   // 左子树
+    struct BiTree *right_ree;   // 右子树
 } BiTree;
 
-// 创建一个节点
+
+// 创建一个节点,返回的是指向树的指针
 BiTree *create_node(my_type data)
 {
-    BiTree *node = (BiTree *)malloc(sizeof(BiTree));
+    BiTree *node = (BiTree *)malloc(sizeof(BiTree));    // 开辟空间
     node->data = data;
     node->left_tree = node->right_ree = NULL;
     return node;
@@ -26,7 +23,7 @@ BiTree *create_node(my_type data)
 void insert_node(my_type data, BiTree *node)
 {
 
-    // 等于的话直接结束
+    // 等于的话直接结束,毕竟我们的目的是搜索与更改,重复元素无意义
     if (data == (node->data))
     {
         return;
@@ -102,18 +99,19 @@ void aft_order_traverse(BiTree *node)
 }
 
 // 层次遍历
+// 核心思想是,每层建立一个指向结构体指针的数组,每回进行更新
 void lel_traverse(BiTree *node)
 {
-    line_deng_hao();
+    line_deng();
     printf("begin level tarvel\n");
-    line_deng_hao();
+    line_deng();
     // 先打印根节点的值
     my_print_t(node->data);    //显示结点值;
     printf("\n");
-    int32 count = 2;            // 下一层节点的个数
+    int count = 2;            // 下一层节点的个数
     // 数组里面存的是结构体指针
     BiTree **arr = (BiTree **)malloc(sizeof(BiTree *) * count);
-    // 先初始化
+    // 先初始化第二层
     fori(0, 2)
     {
         arr[0] = node->left_tree;
@@ -122,7 +120,7 @@ void lel_traverse(BiTree *node)
     while (true)
     {
         // 计算数组里多少个Null
-        int32 tmp_count = 0;
+        int tmp_count = 0;
 
         fori(0, count)
         {
@@ -178,14 +176,14 @@ void lel_traverse(BiTree *node)
 
 // 释放内存 
 // 采用后序遍历的方式来进行内存释放
-void freeTree(BiTree *node)
+void free_tree(BiTree *node)
 {
     if (node == NULL)
     {
         return;
     }
-    freeTree(node->left_tree);
-    freeTree(node->right_ree);
+    free_tree(node->left_tree);
+    free_tree(node->right_ree);
     free(node);
 }
 
@@ -228,7 +226,7 @@ int main(void)
     lel_traverse(root);
     // 
     // 释放内存
-    freeTree(root);
+    free_tree(root);
     root = NULL;
     return 0;
 }

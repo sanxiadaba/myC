@@ -1,8 +1,8 @@
 #include "../my_util.h"
 // 快排
 // 因为快排用到了递归函数调用,所以会多两个左右界参数
-// 其本质是"挖坑”与"填坑”
-void quick_sort(array arr, int32 size, int32 left, int32 right)
+// 其本质是"挖坑"与"填坑"
+void quick_sort(array arr, int size, int left, int right)
 {
     // 记录下没有改变前的左右边界,作为递归函数的传参
     int tmp_left = left;
@@ -22,35 +22,35 @@ void quick_sort(array arr, int32 size, int32 left, int32 right)
         while (left <= right)
         {
             // 注意左指针与右指针的指向的数字与基准的比较规则是不同的
-            // 并且,先是右边的"填坑”,然后左边的再"填”
+            // 并且,先是右边的"填坑",然后左边的再"填"
             if (arr[right] >= arr[pivot])
             {
-                // 直到找到"坑位”
+                // 直到找到"坑位"
                 right--;
                 continue;
             }
-            // 右边找到"坑位”,开始"填坑”
+            // 右边找到"坑位",开始"填坑"
             swap(&arr[pivot], &arr[right]);
             // "坑位"转移
             pivot = right;
             // 指针移动
             right--;
 
-            // 左边开始"找坑”
+            // 左边开始"找坑"
             if (arr[left] <= arr[pivot])
             {
-                // 直到找到"坑位”
+                // 直到找到"坑位"
                 left++;
                 continue;
             }
-            // 左边找到"坑位”,开始"填坑”
+            // 左边找到"坑位",开始"填坑"
             swap(&arr[pivot], &arr[left]);
             // "坑位"转移
             pivot = left;
             // 指针移动
             left++;
         }
-        // 讲过上面的"挖坑”、"填坑”操作后,数组以pivot分界线,基本有序,开始对左右数组再进行快排
+        // 讲过上面的"挖坑"、"填坑"操作后,数组以pivot分界线,基本有序,开始对左右数组再进行快排
         quick_sort(arr, size, tmp_left, pivot - 1);
         quick_sort(arr, size, pivot + 1, tmp_right);
 
@@ -58,12 +58,12 @@ void quick_sort(array arr, int32 size, int32 left, int32 right)
 
 }
 
-int32 main(void)
+int main(void)
 {
     array arr = { 3,44,38,5,47,15,36,26,27,2,46,4,19,50,48 };
-    int32 size = arr_size(arr);
+    int size = arr_size(arr);
     print_arr(arr, size);
-    line_deng_hao();
+    line(1);
     quick_sort(arr, size, 0, size - 1);
     print_arr(arr, size);
     return 0;

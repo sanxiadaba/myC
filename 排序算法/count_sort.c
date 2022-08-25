@@ -1,9 +1,9 @@
 #include "../my_util.h"
 // 计数排序
-void count_sort(array arr, int32 size)
+void count_sort(array arr, int size)
 {
-    int32 min = 0;
-    int32 max = 0;
+    int min = 0;
+    int max = 0;
     // 先统计出原数组最大、最小值
     fori(0, size)
     {
@@ -18,10 +18,10 @@ void count_sort(array arr, int32 size)
     }
     // 开辟max-min+1 大小的数组
     int num = max - min + 1;
-    ptr_int32 tmp_num = (ptr_int32)(malloc(sizeof(int32) * num));
+    ptr_int32 tmp_num = (ptr_int32)(malloc(sizeof(int) * num));
     // 申请数组后初始化数组
-    memset(tmp_num, 0, sizeof(int32) * num);
-    // 再进行一次遍历,把各个元素"填”进去
+    memset(tmp_num, 0, sizeof(int) * num);
+    // 再进行一次遍历,把各个元素"填"进去
     fori(0, size)
     {
         // 对应位置的元素加上一
@@ -36,7 +36,7 @@ void count_sort(array arr, int32 size)
         if (tmp_num[i] != 0)
         {
             // 有的话,要进行遍历,因为原数组相同的元素可能存在多个
-            for (int32 j = tmp_num[i]; j > 0; j--)
+            for (int j = tmp_num[i]; j > 0; j--)
             {
                 arr[count] = i + min;
                 count++;
@@ -53,12 +53,12 @@ void count_sort(array arr, int32 size)
 
 
 
-int32 main(void)
+int main(void)
 {
     array arr = { 3,44,38,5,47,15,36,26,27,2,46,4,19,50,48 };
-    int32 size = arr_size(arr);
+    int size = arr_size(arr);
     print_arr(arr, size);
-    line_deng_hao();
+    line(1);
     count_sort(arr, size);
     print_arr(arr, size);
     return 0;

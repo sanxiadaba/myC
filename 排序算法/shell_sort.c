@@ -1,8 +1,8 @@
 #include "../my_util.h"
 // 希尔排序
-void shell_sort(array arr, int32 size)
+void shell_sort(array arr, int size)
 {
-    int32 gap = size / 2;
+    int gap = size / 2;
     while (gap > 0)
     {
         // 里面是插入排序
@@ -25,12 +25,12 @@ void shell_sort(array arr, int32 size)
 
 }
 
-int32 main(void)
+int main(void)
 {
     array arr = { 3,44,38,5,47,15,36,26,27,2,46,4,19,50,48 };
-    int32 size = arr_size(arr);
+    int size = arr_size(arr);
     print_arr(arr, size);
-    line_deng_hao();
+    line(1);
     shell_sort(arr, size);
     print_arr(arr, size);
     return 0;

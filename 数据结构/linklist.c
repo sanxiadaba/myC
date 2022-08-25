@@ -1,6 +1,6 @@
 // 双向链表
 #include "../my_util.h"
-typedef int32 my_type;  // 自定义数据结构
+typedef int my_type;  // 链表里存储的数据是int类型
 // 先定义结构体
 typedef struct Node
 {
@@ -10,6 +10,7 @@ typedef struct Node
     struct Node *prev;
 } Node;
 
+// 头节点和尾节点
 typedef Node *Head;
 typedef Node *Last;
 
@@ -52,12 +53,7 @@ void pushback_linklist(Head head, my_type data)
 void delete_linklist_last(Head head)
 {
     // 已经删除完的情况下
-    if ((head->data) == 0)
-    {
-        log_error("链表已空,index:%d", 0);
-        assert(false);
-        return;
-    }
+    assert((head->data) != 0);
     Last last = head->prev; // 最末尾的元素
     last->prev->next = head;
     head->prev = last->prev;
@@ -67,15 +63,10 @@ void delete_linklist_last(Head head)
 
 
 // 在指定节点添加一个节点,第一个传的参数是头节点
-void insert_linklist(Head head, int32 index, my_type data)
+void insert_linklist(Head head, int index, my_type data)
 {
     // 先判断索引是否合法
-    if (index<0 or index>(head->data))
-    {
-        log_error("插入链表的节点索引不合法,index: %d", index);
-        assert(0);
-        return;
-    }
+    assert(index >= 0 and index <= (head->data));
 
     // 要插入的数据
     Node *node = create_node_linklist(data);
@@ -111,15 +102,10 @@ void insert_linklist(Head head, int32 index, my_type data)
 }
 
 // 在指定节点删除一个节点,整体逻辑类似在指定位置添加节点
-void delete_linklist(Head head, int32 index)
+void delete_linklist(Head head, int index)
 {
     // 先判断索引是否合法
-    if (index<0 or index>(head->data))
-    {
-        log_error("删除链表的节点索引不合法,index: %d", index);
-        assert(0);
-        return;
-    }
+    assert(index >= 0 and index <= (head->data));
 
     Node *next_node = head;
     // 节点删除,根据index与head->data的关系,判断是从前往后进行遍历还是从后往前进行遍历
@@ -155,7 +141,7 @@ void delete_linklist(Head head, int32 index)
 // 打印链表
 void print_linklist(Head head)
 {
-    int32 all_num = head->data;
+    int all_num = head->data;
     printf("链表元素的个数:%d\n", head->data);
     fori(0, all_num)
     {
@@ -168,7 +154,7 @@ void print_linklist(Head head)
 // 删除链表(释放内存)
 void free_linklist(Head head)
 {
-    int32 all_num = head->data;
+    int all_num = head->data;
     Node *next_node = head->next;
     fori(0, all_num + 1)
     {
@@ -180,7 +166,7 @@ void free_linklist(Head head)
 
 
 
-int32 main(void)
+int main(void)
 {
     Head head = init_linklist();
     // 在末尾添加元素
@@ -192,18 +178,24 @@ int32 main(void)
     insert_linklist(head, 10, 200);  // 在末尾添加元素
     insert_linklist(head, 0, -100);  // 在开头添加元素
     insert_linklist(head, 1, 50);  // 在中间添加元素
-    log_green("删除元素前%s", "");
+    printf("删除元素前:\n");
     print_linklist(head);
+    // 链表元素的个数:13
+    // -100 50 0 1 2 3 4 5 6 7 8 9 200
     // 删除元素
     delete_linklist_last(head); // 删除末尾
     // 删除指定位置元素
     delete_linklist(head, 1); // 删除中间
     delete_linklist(head, 0); // 删除开头
     delete_linklist(head, (head->data) - 1); // 删除末尾
-    log_magenta("删除元素后%s", "");
+    printf("删除元素后\n");
     print_linklist(head);
-    log_magenta("查看链表个数%d", head->data);
-    log_yello("清空链表%s", "");
+    //  链表元素的个数:9
+    //  0 1 2 3 4 5 6 7 8
+    printf("查看链表个数: %d\n", head->data);
+    // 查看链表个数: 9
+    printf("清空链表\n");
     free_linklist(head);
+    // 清空链表
     return 0;
 }
