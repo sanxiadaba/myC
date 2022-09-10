@@ -137,7 +137,7 @@ typedef double *ptr_float64;
 #define max_two_num(x,y) 	(x)>(y)?(x):(y) 		// 返回较大数
 #define min_two_num(x,y) 	(x)<(y)?(x):(y) 		// 返回较小数
 
-// 查看数组长度
+// 查看数组长度,因为这里是通过宏来实现的,不用担心指针降级的问题
 #define arr_size(a)				(sizeof((a))/sizeof((a[0])))
 
 // 两个数的平均数,防溢出
@@ -205,6 +205,11 @@ typedef double *ptr_float64;
 		}																							\
 		is_odd;																						\
 })
+
+// 返回数组中的最大值
+
+
+// 返回数组中的最小值
 
 
 /* 运算宏 */

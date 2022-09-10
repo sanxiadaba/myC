@@ -5,7 +5,7 @@ typedef struct BiTree
 {
     my_type data;
     struct BiTree *left_tree;   // 左子树
-    struct BiTree *right_ree;   // 右子树
+    struct BiTree *right_tree;   // 右子树
 } BiTree;
 
 
@@ -14,7 +14,7 @@ BiTree *create_node(my_type data)
 {
     BiTree *node = (BiTree *)malloc(sizeof(BiTree));    // 开辟空间
     node->data = data;
-    node->left_tree = node->right_ree = NULL;
+    node->left_tree = node->right_tree = NULL;
     return node;
 }
 
@@ -43,13 +43,13 @@ void insert_node(my_type data, BiTree *node)
     }
     else
     {
-        if (node->right_ree == NULL)
+        if (node->right_tree == NULL)
         {
-            node->right_ree = create_node(data);
+            node->right_tree = create_node(data);
         }
         else
         {
-            insert_node(data, node->right_ree);
+            insert_node(data, node->right_tree);
         }
 
     }
@@ -71,7 +71,7 @@ void pre_order_traverse(BiTree *node)
     }
     my_print_t(node->data);    //显示结点值;   
     pre_order_traverse(node->left_tree); //先左子树；
-    pre_order_traverse(node->right_ree);// 再右子树;
+    pre_order_traverse(node->right_tree);// 再右子树;
 }
 
 // 中序遍历
@@ -83,7 +83,7 @@ void in_order_traverse(BiTree *node)
     }
     pre_order_traverse(node->left_tree); //先左子树；
     my_print_t(node->data);    //显示结点值;
-    pre_order_traverse(node->right_ree);// 再右子树;
+    pre_order_traverse(node->right_tree);// 再右子树;
 }
 
 // 后序遍历
@@ -94,7 +94,7 @@ void aft_order_traverse(BiTree *node)
         return;
     }
     pre_order_traverse(node->left_tree); //先左子树；
-    pre_order_traverse(node->right_ree);// 再右子树;
+    pre_order_traverse(node->right_tree);// 再右子树;
     my_print_t(node->data);    //显示结点值;
 }
 
@@ -115,7 +115,7 @@ void lel_traverse(BiTree *node)
     fori(0, 2)
     {
         arr[0] = node->left_tree;
-        arr[1] = node->right_ree;
+        arr[1] = node->right_tree;
     }
     while (true)
     {
@@ -160,7 +160,7 @@ void lel_traverse(BiTree *node)
             {
                 tmp_array[tmp_count] = arr[i]->left_tree;
                 tmp_count++;
-                tmp_array[tmp_count] = arr[i]->right_ree;
+                tmp_array[tmp_count] = arr[i]->right_tree;
                 tmp_count++;
             }
 
@@ -183,7 +183,7 @@ void free_tree(BiTree *node)
         return;
     }
     free_tree(node->left_tree);
-    free_tree(node->right_ree);
+    free_tree(node->right_tree);
     free(node);
 }
 
@@ -202,11 +202,11 @@ int main(void)
     // 结构没有问题
     my_print_t(root->data);
     my_print_t(root->left_tree->data);
-    my_print_t(root->right_ree->data);
+    my_print_t(root->right_tree->data);
     my_print_t(root->left_tree->left_tree->data);
-    my_print_t(root->left_tree->right_ree->data);
-    my_print_t(root->right_ree->left_tree->data);
-    my_print_t(root->right_ree->right_ree->data);
+    my_print_t(root->left_tree->right_tree->data);
+    my_print_t(root->right_tree->left_tree->data);
+    my_print_t(root->right_tree->right_tree->data);
     printf("\n");
     // 9       4       15      2       6       12      17
 
