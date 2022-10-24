@@ -1,5 +1,4 @@
 #pragma once 							// 保证只被编译一次
-#define NDEBUG							// 关闭 assert 这行注释的话开启 assert
 
 /* 常用库导入 */
 #include <stdio.h> 						// 输如输出
