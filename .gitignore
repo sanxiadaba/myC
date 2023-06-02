@@ -2,7 +2,7 @@
 test
 # Prerequisites
 *.d
-
+*.exe
 # Object files
 *.o
 *.ko

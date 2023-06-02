@@ -1,10 +1,10 @@
 #include "../my_util.h"
 // 计数排序
-void count_sort(array arr, int size)
+void count_sort(int arr[], int size)
 {
     int min = 0;
     int max = 0;
-    // 先统计出原数组最大、最小值
+    // 先统计出原数组最大、最小值(这里是对正整数排序)
     fori(0, size)
     {
         if (arr[i] > max)
@@ -18,7 +18,7 @@ void count_sort(array arr, int size)
     }
     // 开辟max-min+1 大小的数组
     int num = max - min + 1;
-    ptr_int32 tmp_num = (ptr_int32)(malloc(sizeof(int) * num));
+    int *tmp_num = (int *)(malloc(sizeof(int) * num));
     // 申请数组后初始化数组
     memset(tmp_num, 0, sizeof(int) * num);
     // 再进行一次遍历,把各个元素"填"进去
@@ -48,18 +48,17 @@ void count_sort(array arr, int size)
     // 别忘了释放内存,事实上,申请内存的时候其实就要处理申请的内存
     free(tmp_num);
     tmp_num = NULL;
-
 }
 
 
 
 int main(void)
 {
-    array arr = { 3,44,38,5,47,15,36,26,27,2,46,4,19,50,48 };
-    int size = arr_size(arr);
-    print_arr(arr, size);
+    int arr[] = { 3,44,38,5,47,15,36,26,27,2,46,4,19,50,48 };
+    int size = sizeof(arr) / sizeof(arr[0]);
+    arr_print(arr, size);
     line(1);
     count_sort(arr, size);
-    print_arr(arr, size);
+    arr_print(arr, size);
     return 0;
 }

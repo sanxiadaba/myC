@@ -3,7 +3,8 @@
 
 void test_sleep()
 {
-    usleep(500 * 1000);   // 休眠指定微秒
+    // usleep(500 * 1000);   // 休眠指定微秒
+    sleep(1);
 }
 
 int main(void)
